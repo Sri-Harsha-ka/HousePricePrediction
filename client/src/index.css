@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@layer{
+    .customFontBig{
+        @apply text-9xl font-mono tracking-wider uppercase block
+    }
+    .customFontNav{
+        @apply text-3xl font-light tracking-tight
+    }
+    .customFontSmall{
+        @apply text-5xl font-semibold tracking-tight
+    }
+    .customButton{
+        @apply bg-zinc-950 px-10 py-5 text-2xl rounded-2xl
+    }
+}
