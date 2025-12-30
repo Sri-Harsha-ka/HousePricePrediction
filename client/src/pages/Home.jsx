@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { motion, scale } from 'motion/react'
 import { Link } from 'react-router-dom'
-import Tilt from 'react-parallax-tilt'
+import Button from '../components/Button'
 
 const Home = () => {
 
@@ -56,18 +56,7 @@ const Home = () => {
                     </div>
                     <div className='flex justify-center items-center'>
                         <Link to='/form'>
-                            <Tilt className='customButton mt-20 w-60 overflow-hidden cursor-pointer'
-                                tiltMaxAngleX={15}
-                                tiltMaxAngleY={15}
-                                scale={1.1}
-                                glareEnable={true}
-                                glareColor='#fffff'
-                                glareMaxOpacity={0.7}
-                            >
-                                <button className='w-full text-2xl cursor-pointer '>
-                                    Predict Now
-                                </button>
-                            </Tilt>
+                            <Button text="Predict Now"/>
                         </Link>
                     </div>
                 </div>
