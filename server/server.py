@@ -1,10 +1,19 @@
 from fastapi import FastAPI
 import pandas as pd
-import numpy as np
 from pydantic import BaseModel
 import joblib as jb
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    
+)
 
 @app.get('/')
 def root():
@@ -24,7 +33,7 @@ class inputData(BaseModel):
     sqft_basement : float
     yr_built : float
     lat : float
-    long : float
+    longitude : float
     sqft_living15 : float
     is_renovated : int
     year_since_renovation : float 
@@ -38,14 +47,25 @@ expCols = jb.load('./dumps/Columns.pkl')
 @app.post('/predict')
 def prediction(inputBody: inputData):
     
-    inputVal = inputBody.dict()
+    inputVal = inputBody.model_dump()
+    
+    print("RAW INPUT BODY:")    
+    for k, v in inputVal.items():
+        print(k, v, type(v))
+    
     inputDf = pd.DataFrame([inputVal])
+    inputDf = inputDf.rename(columns={"longitude": "long"})
     for col in expCols:
         if col not in inputDf.columns:
             inputDf[col] = 0
+    for k, v in inputVal.items():
+        print(k, v, type(v))
+    
     inputDf = inputDf[expCols]
     inputScaled = scale.transform(inputDf)
     pred = model.predict(inputScaled)
+    
+    print(pred)
     
     return {
         "prediction" : pred[0]

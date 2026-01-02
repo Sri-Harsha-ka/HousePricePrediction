@@ -3,6 +3,8 @@ import Dropdown from '../layouts/Dropdown'
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider"
 import Button from '../components/Button';
+import { useGlobal } from '../context/GlobalContext';
+import { useNavigate } from 'react-router-dom';
 
 const Form = () => {
 
@@ -25,170 +27,200 @@ const Form = () => {
     // year_since_renovation : float ---------
     // zipcode_encoded : float ----------
 
-    const [bedrooms, setBedrooms] = useState("Select")
-    const [openBedroom, setOpenBedroom] = useState(false)
+    const { formData, updateField, predictNow } = useGlobal()
 
+    const navigate = useNavigate()
 
-    const checkFun = (value) => {
-        console.log(value);
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const result = await predictNow(formData);
+        navigate('/output' , {
+            state : result
+        })
+    };
+
 
 
     return (
         <div>
             <div className='flex flex-col items-center gap-20 pt-28 min-h-screen customFontSmall'>
-                <div>
+                <div className='text-3xl text-center md:text-4xl lg:text-6xl'>
                     Fill the Details for Prediction
                 </div>
 
-                <form className='' action="">
-                    <div className='text-2xl flex justify-center flex-col gap-10 pb-10'>
+                <form className='' onSubmit={handleSubmit}>
+                    <div className='text-lg md:text-xl lg:text-xl xl:text-2xl flex justify-center flex-col gap-6 md:gap-10 xl:gap-14 pb-10 w-[20vw] sm:w-[20vw] lg:w-[40vw] md:w-[30vw] xl:w-[70vw] 2xl:w-[70vw]'>
 
-                        <div className='Bedrooms flex gap-10 justify-center items-center'>
-                            Bedrooms :
+                        <div className='Bedrooms sliderCustom'>
+                            <span className='formText'> Bedrooms :</span>
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={1}
+                                    value={formData.bedrooms}
                                     step={1}
                                     min={0}
                                     max={7}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => updateField("bedrooms", val)}
                                     aria-label='bedrooms'
                                 />
                             </Box>
                         </div>
-                        <div className='Bathrooms flex gap-10 justify-center items-center'>
-                            Bathrooms :
+                        <div className='Bathrooms sliderCustom'>
+                            <span className='formText'>Bathrooms :</span>
+                            
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={1}
+                                    value={formData.bathrooms}
                                     step={1}
                                     min={0}
                                     max={6}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => updateField("bathrooms", val)}
                                     aria-label='bathrooms'
                                 />
                             </Box>
                         </div>
 
-                        <div className='Sqrt_living flex gap-10 justify-center items-center'>
-                            Living Area (sq ft) :
-                            <input className='focus:outline-none bg-zinc-800 px-3 py-2 text-lg text-center w-60' type="text" pattern='[0-9]*' inputMode='numeric' />
+                        <div className='Sqrt_living inputContainer'>
+                            <span className='formText'>Living Area (sq ft) :</span>
+                            <input className='focus:outline-none inputCustom' type="text" pattern='[0-9]*' value={formData.sqft_living} required inputMode='numeric' onChange={(e) => { updateField("sqft_living", Number(e.target.value)) }} />
                         </div>
 
-                        <div className='Sqrt_lots flex gap-10 justify-center items-center'>
-                            Lot Size (sq ft) :
-                            <input className='focus:outline-none bg-zinc-800 px-3 py-2 text-lg text-center w-60' type="text" pattern='[0-9]*' inputMode='numeric' />
+                        <div className='Sqrt_lots inputContainer'>
+                            <span className='formText'>Lot Size (sq ft) :</span>
+                            <input className='focus:outline-none inputCustom' type="text" pattern='[0-9]*' value={formData.sqft_lot} required inputMode='numeric' onChange={(e) => { updateField("sqft_lot", Number(e.target.value)) }} />
                         </div>
 
-                        <div className='Flors flex gap-10 justify-center items-center'>
-                            Number of Floors :
+                        <div className='Flors sliderCustom'>
+                            <span className='formText'>Number of Floors :</span>
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={1}
+                                    value={formData.floors}
                                     step={1}
                                     min={1}
                                     max={4}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => { updateField("floors", val) }}
                                     aria-label='bathrooms'
                                 />
                             </Box>
                         </div>
 
-                        <div className='Flors flex gap-10 justify-center items-center'>
-                            Waterfront Property (Yes / No):
-                            <Dropdown optionsValues={[1, 0]} />
+                        <div className='waterfront inputContainer'>
+                            <span className='formText'>Waterfront Property (Yes / No):</span>
+                            <Dropdown optionsValues={[1, 0]} field={"waterfront"} value={formData.waterfront} />
                         </div>
 
-                        <div className='ViewQuality flex gap-10 justify-center items-center'>
-                            View Quality (0–4):
+                        <div className='ViewQuality sliderCustom'>
+                            <span className='formText'>View Quality (0–4):</span>
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={0}
+                                    value={formData.view}
                                     step={1}
                                     min={0}
                                     max={4}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => updateField("view", val)}
                                     aria-label='bathrooms'
                                 />
                             </Box>
                         </div>
 
-                        <div className='PropertyCondition flex gap-10 justify-center items-center'>
-                            Property Condition (1–5) :
+                        <div className='PropertyCondition sliderCustom'>
+                            <span className='formText'>Property Condition (1–5) :</span>
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={0}
+                                    value={formData.condition}
                                     step={1}
                                     min={0}
-                                    max={4}
+                                    max={5}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => updateField("condition", val)}
                                     aria-label='bathrooms'
                                 />
                             </Box>
                         </div>
 
-                        <div className=' ConstructionGrade flex gap-10 justify-center items-center'>
-                            Construction Grade (1–13):
+                        <div className=' ConstructionGrade sliderCustom'>
+                            <span className='formText'>Construction Grade (1–13):</span>
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={7}
+                                    value={formData.grade}
                                     step={1}
                                     min={1}
                                     max={13}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => updateField("grade", val)}
                                     aria-label='bathrooms'
                                 />
                             </Box>
                         </div>
 
-                        <div className=' AboveGroundArea flex gap-10 justify-center items-center'>
-                            Above-Ground Area (sq ft):
-                            <input className='focus:outline-none bg-zinc-800 px-3 py-2 text-lg text-center w-60' type="text" pattern='[0-9]*' inputMode='numeric' />
+                        <div className=' AboveGroundArea inputContainer'>
+                            <span className='formText'>Above-Ground Area (sq ft):</span>
+                            <input className='focus:outline-none inputCustom' type="text" pattern='[0-9]*' value={formData.sqft_above} required inputMode='numeric' onChange={(e) => updateField("sqft_above", Number(e.target.value))} />
                         </div>
 
-                        <div className=' AboveGroundArea flex gap-10 justify-center items-center'>
-                            Basement Area (sq ft):
-                            <input className='focus:outline-none bg-zinc-800 px-3 py-2 text-lg text-center w-60' type="text" pattern='[0-9]*' inputMode='numeric' />
+                        <div className=' AboveGroundArea inputContainer'>
+                            <span className='formText'>Basement Area (sq ft):</span>
+                            <input className='focus:outline-none inputCustom' type="text" pattern='[0-9]*' value={formData.sqft_basement} required inputMode='numeric' onChange={(e) => updateField("sqft_basement", Number(e.target.value))} />
                         </div>
 
-                        <div className=' YearBuilt flex gap-10 justify-center items-center'>
-                            Year Built:
+                        <div className=' YearBuilt sliderCustom'>
+                            <span className='formText'>Year Built:</span>
                             <Box sx={{ width: 200 }}>
                                 <Slider
                                     defaultValue={2020}
+                                    value={formData.yr_built}
                                     step={1}
                                     min={1950}
                                     max={2026}
                                     valueLabelDisplay='auto'
-                                    getAriaValueText={checkFun}
+                                    onChange={(e, val) => updateField("yr_built", val)}
                                     aria-label='bathrooms'
                                 />
                             </Box>
                         </div>
 
-                        <div className=' AboveGroundArea flex gap-10 justify-center items-center'>
-                            Avg Living Area (Nearby Homes):
-                            <input className='focus:outline-none bg-zinc-800 px-3 py-2 text-lg text-center w-60' type="text" pattern='[0-9]*' inputMode='numeric' />
+                        <div className=' AboveGroundArea inputContainer'>
+                            <span className='formText'>Avg Living Area (Nearby Homes):</span>
+                            <input className='focus:outline-none inputCustom' type="text" pattern='[0-9]*' value={formData.sqft_living15} required inputMode='numeric' onChange={(e) => updateField("sqft_living15", Number(e.target.value))} />
                         </div>
 
-                        <div className='Flors flex gap-10 justify-center items-center'>
-                            Renovated? (Yes / No):
-                            <Dropdown optionsValues={[1, 0]} />
+                        <div className='renovated inputContainer'>
+                            <span className='formText'>Renovated? (Yes / No):</span>
+                            <Dropdown optionsValues={[1, 0]} field={"is_renovated"} value={formData.is_renovated} />
                         </div>
 
-                        <div className='flex justify-center items-center'>
+                        <div className='flex gap-10 justify-center flex-col md:flex-col lg:flex-row xl:flex-col 2xl:flex-col'>
+                            <div className=' Lat inputContainer'>
+                                <span className='formText'> Latitude :</span>
+                                <input className='focus:outline-none inputCustom' type="number"  value={formData.lat} required inputMode='numeric' onChange={(e) => updateField("lat", Number(e.target.value))} />
+                            </div>
+                            <div className=' Longitude inputContainer'>
+                                <span className='formText'>Longitude :</span>
+                                <input className='focus:outline-none inputCustom' type="number" value={formData.longitude} required inputMode='numeric' onChange={(e) => updateField("longitude", Number(e.target.value))} />
+                            </div>
+                        </div>
+
+                        <div className=' Longitude inputContainer'>
+                            <span className='formText'>Zipcode :</span>
+                            <input className='focus:outline-none inputCustom' type="number" value={formData.zipcode_encoded} required inputMode='numeric' onChange={(e) => updateField("zipcode_encoded", Number(e.target.value))} />
+                        </div>
+
+
+
+
+
+                        <button className='flex justify-center items-center' type='submit'>
                             <Button text="Submit" />
-                        </div>
-
-
-
+                        </button>
 
                     </div>
                 </form>

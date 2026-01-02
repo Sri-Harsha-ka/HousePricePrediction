@@ -5,7 +5,7 @@ import Tilt from 'react-parallax-tilt'
 const Button = ({text}) => {
     return (
         <div>
-            <Tilt className='customButton mt-20 w-60 overflow-hidden cursor-pointer'
+            <Tilt className='customButton mt-10 md:mt-14 w-44 md:w-52 lg:56 xl:50 text-nowrap  overflow-hidden cursor-pointer'
                 tiltMaxAngleX={15}
                 tiltMaxAngleY={15}
                 scale={1.1}
@@ -13,9 +13,9 @@ const Button = ({text}) => {
                 glareColor='#fffff'
                 glareMaxOpacity={0.7}
             >
-                <button className='w-full text-2xl cursor-pointer '>
+                <div className='w-full text-xl  cursor-pointer '>
                     {text}
-                </button>
+                </div>
             </Tilt>
         </div>
     )

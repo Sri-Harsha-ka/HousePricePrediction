@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-@layer{
+@layer utilities{
     .customFontBig{
-        @apply text-9xl font-mono tracking-wider uppercase block
+        @apply font-mono tracking-wider uppercase sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl block text-3xl;
     }
     .customFontNav{
         @apply text-3xl font-light tracking-tight
@@ -12,5 +12,17 @@
     }
     .customButton{
         @apply bg-zinc-950 px-10 py-5 text-2xl rounded-2xl
+    }
+    .sliderCustom {
+        @apply  flex gap-2 xl:gap-14 2xl:gap-20 flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row justify-center items-center;
+    }
+    .inputCustom {
+        @apply bg-zinc-800 px-0 py-2 text-lg text-center text-nowrap min-w-[20vw] sm:w-[11vw] md:w-[13vw] lg:w-[15vw] xl:w-[17vw] 2xl:w-[20vw];
+    }
+    .formText {
+        @apply text-nowrap text-lg md:text-xl lg:text-xl xl:text-2xl 2xl:text-2xl font-normal lg:font-bold ;
+    }
+    .inputContainer{
+        @apply flex gap-5 justify-center items-center flex-col md:flex-row md:gap-10;
     }
 }

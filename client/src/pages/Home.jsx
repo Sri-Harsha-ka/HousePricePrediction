@@ -32,9 +32,9 @@ const Home = () => {
     return (
         <div>
             <div className='h-screen grid place-items-center'>
-                <div className='text-center'>
-                    <div className='text-center'>
-                        <span ref={textOne} className='customFontBig'>
+                <div className='text-center max-w-7xl '>
+                    <div className='text-center '>
+                        <span ref={textOne} className='customFontBig '>
                             {
                                 'house'.split('').map((ch, i) => {
                                     return <span key={i} className='inline-block'>{ch}</span>

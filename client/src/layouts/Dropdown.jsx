@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react';
+import { useGlobal } from '../context/GlobalContext';
 
-const Dropdown = ({ optionsValues}) => {
+const Dropdown = ({ optionsValues ,field , value}) => {
+
+    const {updateField} = useGlobal()
 
     const onClickDrophead = () => {
         setShow(!show);
     }
 
     const onClickOption = (item) => {
-        setValue(item)
+        updateField(field , item);
+        
         setShow(!show);
     }
 
     const [show, setShow] = useState(false)
-    const [value, setValue] = useState(0)
 
 
     return (
