@@ -6,7 +6,7 @@ const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
 
-    const baseURL = "http://localhost:8000"
+    const baseURL = import.meta.env.VITE_ML_API
 
     const [formData, setFormData] = useState({
         bedrooms: 1,
@@ -39,8 +39,7 @@ export const GlobalProvider = ({ children }) => {
 
     const predictNow = async (data) => {
         try {
-            console.log(data);
-            
+                        
             const res = await axios.post(`${baseURL}/predict`, data)
             console.log(res.data);
             return res.data
