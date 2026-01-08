@@ -8,6 +8,8 @@ export const GlobalProvider = ({ children }) => {
 
     const baseURL = import.meta.env.VITE_ML_API
 
+    const [loadingState, setLoadingState] = useState(false)
+
     const [formData, setFormData] = useState({
         bedrooms: 1,
         bathrooms: 1,
@@ -47,6 +49,11 @@ export const GlobalProvider = ({ children }) => {
             console.error(err)
             throw err
         }
+        finally{
+            setLoadingState(false)
+            console.log(loadingState);
+            
+        }
     }
 
 
@@ -56,7 +63,9 @@ export const GlobalProvider = ({ children }) => {
             formData,
             updateField,
             setFormData,
-            predictNow
+            predictNow,
+            setLoadingState,
+            loadingState,
         }}>
             {children}
         </GlobalContext.Provider>

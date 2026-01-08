@@ -5,6 +5,7 @@ import Slider from "@mui/material/Slider"
 import Button from '../components/Button';
 import { useGlobal } from '../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 const Form = () => {
 
@@ -27,12 +28,15 @@ const Form = () => {
     // year_since_renovation : float ---------
     // zipcode_encoded : float ----------
 
-    const { formData, updateField, predictNow } = useGlobal()
+    const { formData, updateField, predictNow, setLoadingState ,loadingState } = useGlobal()
 
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(loadingState);
+        
+        setLoadingState(true);
         const result = await predictNow(formData);
         navigate('/output' , {
             state : result
@@ -219,7 +223,7 @@ const Form = () => {
 
 
                         <button className='flex justify-center items-center' type='submit'>
-                            <Button text="Submit" />
+                            <Button text="Submit" loadingState={loadingState} />
                         </button>
 
                     </div>
